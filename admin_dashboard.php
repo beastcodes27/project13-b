@@ -4,7 +4,7 @@ require_once 'config/db.php';
 
 // Check if user is logged in and is admin
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
-    header("Location: login.html");
+    header("Location: login.php");
     exit;
 }
 
@@ -27,10 +27,11 @@ $unread_messages = $stmt->fetchColumn();
 
 // 2. Fetch Recent Requests
 $stmt = $pdo->query("
-    SELECT r.*, u.full_name as client_name, s.name as service_name 
+    SELECT r.*, u.full_name as client_name, s.name as service_name, tech.full_name as tech_name
     FROM installation_requests r 
     JOIN users u ON r.client_id = u.id 
     JOIN services s ON r.service_id = s.id 
+    LEFT JOIN users tech ON r.technician_id = tech.id
     ORDER BY r.created_at DESC 
     LIMIT 20
 ");
@@ -100,6 +101,7 @@ include 'includes/header.php';
                         <th style="padding: 1rem;">ID</th>
                         <th style="padding: 1rem;">Client</th>
                         <th style="padding: 1rem;">Service</th>
+                        <th style="padding: 1rem;">Assigned To</th>
                         <th style="padding: 1rem;">Status</th>
                         <th style="padding: 1rem;">Date</th>
                         <th style="padding: 1rem;">Actions</th>
@@ -115,10 +117,20 @@ include 'includes/header.php';
                                 </td>
                                 <td style="padding: 1rem;"><?php echo htmlspecialchars($req['service_name']); ?></td>
                                 <td style="padding: 1rem;">
+                                    <?php if ($req['tech_name']): ?>
+                                        <span style="color: var(--text-color); font-size: 0.9rem;">
+                                            <i class="fas fa-user-cog" style="margin-right: 0.3rem; color: var(--primary-color);"></i>
+                                            <?php echo htmlspecialchars($req['tech_name']); ?>
+                                        </span>
+                                    <?php else: ?>
+                                        <span style="color: var(--text-muted); font-size: 0.85rem; font-style: italic;">Unassigned</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td style="padding: 1rem;">
                                     <?php 
                                         $statusColor = '#fbbf24'; // Pending
                                         if ($req['status'] == 'completed') $statusColor = '#10b981';
-                                        elseif ($req['status'] == 'cancelled') $statusColor = '#ef4444';
+                                        elseif ($req['status'] == 'cancelled' || $req['status'] == 'rejected') $statusColor = '#ef4444';
                                         elseif ($req['status'] == 'in_progress') $statusColor = '#3b82f6';
                                         elseif ($req['status'] == 'assigned') $statusColor = '#8b5cf6';
                                         elseif ($req['status'] == 'approved') $statusColor = '#3b82f6';
@@ -135,7 +147,7 @@ include 'includes/header.php';
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="6" style="padding: 2rem; text-align: center; color: var(--text-muted);">
+                            <td colspan="7" style="padding: 2rem; text-align: center; color: var(--text-muted);">
                                 No installation requests found.
                             </td>
                         </tr>

@@ -19,7 +19,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=2.0">
 </head>
 <body>
     
@@ -34,7 +34,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 <li><a href="index.php" class="nav-link">Home</a></li>
                 <li><a href="#services" class="nav-link">Services</a></li>
                 <li><a href="#about" class="nav-link">About Us</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="contact.php" class="nav-link">Contact</a></li>
             </ul>
             <?php endif; ?>
             
@@ -43,15 +43,19 @@ if (session_status() === PHP_SESSION_NONE) {
                     <span style="margin-right: 1rem; color: var(--text-color);">Hi, <?php echo htmlspecialchars($_SESSION['user_name'] ?? 'User'); ?></span>
                     <?php 
                         $dashboardLink = 'client_dashboard.php';
-                        if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
-                            $dashboardLink = 'admin_dashboard.php';
+                        if (isset($_SESSION['user_role'])) {
+                            if ($_SESSION['user_role'] === 'admin') {
+                                $dashboardLink = 'admin_dashboard.php';
+                            } elseif ($_SESSION['user_role'] === 'technician') {
+                                $dashboardLink = 'technician_dashboard.php';
+                            }
                         }
                     ?>
                     <a href="<?php echo $dashboardLink; ?>" class="btn btn-outline" style="margin-right: 0.5rem;">Dashboard</a>
                     <a href="api/auth/logout.php" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Logout</a>
                 <?php else: ?>
-                    <a href="login.html" class="btn btn-outline" style="margin-right: 1rem;">Log In</a>
-                    <a href="register.html" class="btn btn-primary">Get Started</a>
+                    <a href="login.php" class="btn btn-outline" style="margin-right: 1rem;">Log In</a>
+                    <a href="register.php" class="btn btn-primary">Get Started</a>
                 <?php endif; ?>
             </div>
         </div>

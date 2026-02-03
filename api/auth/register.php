@@ -11,12 +11,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Basic Validation
     if (empty($fullname) || empty($email) || empty($password) || empty($confirm_password)) {
-        header("Location: ../../register.php?error=empty_fields");
+        header("Location: ../../register.html?error=empty_fields");
         exit;
     }
 
     if ($password !== $confirm_password) {
-        header("Location: ../../register.php?error=password_mismatch");
+        header("Location: ../../register.html?error=password_mismatch");
         exit;
     }
 
@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
         $stmt->execute([$email]);
         if ($stmt->fetch()) {
-            header("Location: ../../register.php?error=email_taken");
+            header("Location: ../../register.html?error=email_taken");
             exit;
         }
 
@@ -34,19 +34,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $stmt = $pdo->prepare("INSERT INTO users (full_name, email, password, phone, role) VALUES (?, ?, ?, ?, 'client')");
         if ($stmt->execute([$fullname, $email, $hashed_password, $phone])) {
-            header("Location: ../../login.php?success=registered");
+            header("Location: ../../login.html?success=registered");
             exit;
         } else {
-            header("Location: ../../register.php?error=registration_failed");
+            header("Location: ../../register.html?error=registration_failed");
             exit;
         }
     } catch (PDOException $e) {
         error_log($e->getMessage());
-        header("Location: ../../register.php?error=server_error");
+        header("Location: ../../register.html?error=server_error");
         exit;
     }
 } else {
-    header("Location: ../../register.php");
+    header("Location: ../../register.html");
     exit;
 }
 ?>

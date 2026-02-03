@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message = $_POST['message'] ?? '';
 
     if (empty($name) || empty($email) || empty($message)) {
-        header("Location: ../contact.html?error=empty_fields");
+        header("Location: ../contact.php?error=empty_fields");
         exit;
     }
 
@@ -16,14 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute([$name, $email, $message]);
         
         // Redirect with success message
-        header("Location: ../contact.html?msg=sent");
+        header("Location: ../contact.php?msg=sent");
         exit;
     } catch (PDOException $e) {
-        header("Location: ../contact.html?error=server_error");
+        header("Location: ../contact.php?error=server_error");
         exit;
     }
 } else {
-    header("Location: ../contact.html");
+    header("Location: ../contact.php");
     exit;
 }
 ?>

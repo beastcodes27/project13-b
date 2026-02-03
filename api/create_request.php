@@ -4,7 +4,7 @@ require_once '../config/db.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../../login.html");
+    header("Location: ../index.php");
     exit;
 }
 
@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validation
     if (!$service_id || empty($address)) {
-        header("Location: ../../client_dashboard.php?error=missing_fields");
+        header("Location: ../client_dashboard.php?error=missing_fields");
         exit;
     }
 
@@ -38,17 +38,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $description
         ]);
 
-        header("Location: ../../client_dashboard.php?msg=request_created");
+        header("Location: ../client_dashboard.php?msg=request_created");
         exit;
 
     } catch (PDOException $e) {
         error_log("Database Error: " . $e->getMessage());
-        header("Location: ../../client_dashboard.php?error=db_error");
+        header("Location: ../client_dashboard.php?error=db_error");
         exit;
     }
 } else {
     // If not POST, redirect back
-    header("Location: ../../client_dashboard.php");
+    header("Location: ../client_dashboard.php");
     exit;
 }
 ?>
