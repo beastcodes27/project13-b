@@ -51,6 +51,42 @@
 
 <!-- Simple script to handle URL parameters for errors -->
 <script>
+    const form = document.querySelector('form');
+    const email = document.getElementById('email');
+
+    function showPopup(message) {
+        const popup = document.createElement('div');
+        popup.style.position = 'fixed';
+        popup.style.top = '20px';
+        popup.style.left = '50%';
+        popup.style.transform = 'translateX(-50%)';
+        popup.style.backgroundColor = '#ef4444';
+        popup.style.color = 'white';
+        popup.style.padding = '1rem 2rem';
+        popup.style.borderRadius = '8px';
+        popup.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+        popup.style.zIndex = '1000';
+        popup.style.display = 'flex';
+        popup.style.alignItems = 'center';
+        popup.style.animation = 'animate-fade-in 0.3s ease-out';
+
+        popup.innerHTML = `<i class="fas fa-exclamation-circle" style="margin-right: 0.5rem;"></i> ${message}`;
+        document.body.appendChild(popup);
+        setTimeout(() => {
+            popup.style.opacity = '0';
+            popup.style.transition = 'opacity 0.5s ease-out';
+            setTimeout(() => popup.remove(), 500);
+        }, 4000);
+    }
+
+    form.addEventListener('submit', function (e) {
+        const emailValue = email.value.toLowerCase();
+        if (!emailValue.endsWith('@gmail.com')) {
+            e.preventDefault();
+            showPopup('Please use your valid @gmail.com address.');
+        }
+    });
+
     const urlParams = new URLSearchParams(window.location.search);
     const error = urlParams.get('error');
     if (error) {
@@ -59,25 +95,7 @@
         else if (error === 'invalid_credentials') msg = 'Invalid email or password.';
         else if (error === 'server_error') msg = 'Server error. Please try again later.';
 
-        if (msg) {
-            const popup = document.createElement('div');
-            popup.style.position = 'fixed';
-            popup.style.top = '20px';
-            popup.style.left = '50%';
-            popup.style.transform = 'translateX(-50%)';
-            popup.style.backgroundColor = '#ef4444';
-            popup.style.color = 'white';
-            popup.style.padding = '1rem 2rem';
-            popup.style.borderRadius = '8px';
-            popup.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
-            popup.style.zIndex = '1000';
-            popup.style.display = 'flex';
-            popup.style.alignItems = 'center';
-
-            popup.innerHTML = `<i class="fas fa-exclamation-circle" style="margin-right: 0.5rem;"></i> ${msg}`;
-            document.body.appendChild(popup);
-            setTimeout(() => popup.remove(), 5000);
-        }
+        if (msg) showPopup(msg);
     }
 </script>
 

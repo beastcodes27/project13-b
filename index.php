@@ -19,7 +19,7 @@ include 'includes/header.php';
     <!-- Hero Section -->
     <section class="hero">
         <div class="container animate-fade-in">
-            <h1>Advanced Security for<br>Modern Life</h1>
+            <h1 class="float-animation">Advanced Security for<br>Modern Life</h1>
             <p>SmartSecure Solutions provides cutting-edge installation and maintenance services for CCTV, alarm
                 systems, and access control. Secure your world today.</p>
             <div class="hero-actions">

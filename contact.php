@@ -6,7 +6,7 @@ include 'includes/header.php';
     <!-- Hero Section -->
     <section class="hero" style="padding-top: 8rem; padding-bottom: 2rem;">
         <div class="container animate-fade-in">
-            <h1>By Your Side,<br>Anytime, Anywhere.</h1>
+            <h1 class="float-animation">By Your Side,<br>Anytime, Anywhere.</h1>
             <p style="margin-bottom: 0;">We’d love to hear from you. Reach out to us for inquiries, support, or a
                 free consultation.</p>
         </div>
@@ -84,7 +84,7 @@ include 'includes/header.php';
                             }
                          ?>
                     </div>
-                    <form action="api/submit_contact.php" method="POST"
+                    <form action="api/submit_contact.php" method="POST" id="contactForm"
                         style="background: rgba(0,0,0,0.2); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--glass-border);">
                         <h3 style="margin-bottom: 1.5rem;">Send a Message</h3>
 
@@ -113,6 +113,44 @@ include 'includes/header.php';
             </div>
         </div>
     </section>
+
+    <script>
+        const contactForm = document.getElementById('contactForm');
+        const contactEmail = document.getElementById('email');
+
+        function showContactPopup(message) {
+            const popup = document.createElement('div');
+            popup.style.position = 'fixed';
+            popup.style.top = '20px';
+            popup.style.left = '50%';
+            popup.style.transform = 'translateX(-50%)';
+            popup.style.backgroundColor = '#ef4444';
+            popup.style.color = 'white';
+            popup.style.padding = '1rem 2rem';
+            popup.style.borderRadius = '8px';
+            popup.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+            popup.style.zIndex = '1000';
+            popup.style.display = 'flex';
+            popup.style.alignItems = 'center';
+            popup.style.animation = 'animate-fade-in 0.3s ease-out';
+
+            popup.innerHTML = `<i class="fas fa-exclamation-circle" style="margin-right: 0.5rem;"></i> ${message}`;
+            document.body.appendChild(popup);
+            setTimeout(() => {
+                popup.style.opacity = '0';
+                popup.style.transition = 'opacity 0.5s ease-out';
+                setTimeout(() => popup.remove(), 500);
+            }, 4000);
+        }
+
+        contactForm.addEventListener('submit', function (e) {
+            const emailVal = contactEmail.value.toLowerCase();
+            if (!emailVal.endsWith('@gmail.com')) {
+                e.preventDefault();
+                showContactPopup('Please use a valid @gmail.com address for contact.');
+            }
+        });
+    </script>
 
     <!-- Map Section -->
     <section style="height: 300px; width: 100%; filter: grayscale(100%) invert(90%);">

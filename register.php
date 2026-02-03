@@ -51,6 +51,9 @@
                     <i class="fas fa-lock"
                         style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
                 </div>
+                <small style="display: block; margin-top: 0.5rem; color: var(--text-muted); font-size: 0.75rem;">
+                    <i class="fas fa-info-circle"></i> Must be at least 8 characters, include an uppercase letter and '!'.
+                </small>
             </div>
 
             <div class="form-group">
@@ -76,18 +79,69 @@
 </div>
 
 <script>
-    // Check for password match
     const form = document.querySelector('form');
+    const email = document.getElementById('email');
     const password = document.getElementById('password');
     const confirmPassword = document.getElementById('confirm_password');
 
+    function showPopup(message, type = 'error') {
+        const popup = document.createElement('div');
+        popup.style.position = 'fixed';
+        popup.style.top = '20px';
+        popup.style.left = '50%';
+        popup.style.transform = 'translateX(-50%)';
+        popup.style.backgroundColor = type === 'error' ? '#ef4444' : '#10b981';
+        popup.style.color = 'white';
+        popup.style.padding = '1rem 2rem';
+        popup.style.borderRadius = '8px';
+        popup.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+        popup.style.zIndex = '1000';
+        popup.style.display = 'flex';
+        popup.style.alignItems = 'center';
+        popup.style.animation = 'animate-fade-in 0.3s ease-out';
+
+        popup.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}" style="margin-right: 0.5rem;"></i> ${message}`;
+        document.body.appendChild(popup);
+        setTimeout(() => {
+            popup.style.opacity = '0';
+            popup.style.transition = 'opacity 0.5s ease-out';
+            setTimeout(() => popup.remove(), 500);
+        }, 4000);
+    }
+
     form.addEventListener('submit', function (e) {
-        if (password.value !== confirmPassword.value) {
+        let errors = [];
+        
+        // 1. Gmail Validation
+        const emailValue = email.value.toLowerCase();
+        if (!emailValue.endsWith('@gmail.com')) {
+            errors.push('Please use a valid @gmail.com address.');
+        }
+
+        // 2. Password Validation
+        const passValue = password.value;
+        if (passValue.length < 8) {
+            errors.push('Password must be at least 8 characters long.');
+        }
+        if (!/[A-Z]/.test(passValue)) {
+            errors.push('Password must contain at least one uppercase letter.');
+        }
+        if (!passValue.includes('!')) {
+            errors.push('Password must include an exclamation mark (!).');
+        }
+
+        // 3. Confirm Password Match
+        if (passValue !== confirmPassword.value) {
+            errors.push('Passwords do not match.');
+        }
+
+        if (errors.length > 0) {
             e.preventDefault();
-            alert('Passwords do not match!');
+            showPopup(errors[0]); // Show the first error
         }
     });
 
+    // Check for URL params for server-side errors
     const urlParams = new URLSearchParams(window.location.search);
     const error = urlParams.get('error');
     if (error) {
@@ -98,25 +152,7 @@
         else if (error === 'registration_failed') msg = 'Registration failed. Try again.';
         else if (error === 'server_error') msg = 'Server error. Please try again later.';
 
-        if (msg) {
-            const popup = document.createElement('div');
-            popup.style.position = 'fixed';
-            popup.style.top = '20px';
-            popup.style.left = '50%';
-            popup.style.transform = 'translateX(-50%)';
-            popup.style.backgroundColor = '#ef4444';
-            popup.style.color = 'white';
-            popup.style.padding = '1rem 2rem';
-            popup.style.borderRadius = '8px';
-            popup.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
-            popup.style.zIndex = '1000';
-            popup.style.display = 'flex';
-            popup.style.alignItems = 'center';
-
-            popup.innerHTML = `<i class="fas fa-exclamation-circle" style="margin-right: 0.5rem;"></i> ${msg}`;
-            document.body.appendChild(popup);
-            setTimeout(() => popup.remove(), 5000);
-        }
+        if (msg) showPopup(msg);
     }
 </script>
 

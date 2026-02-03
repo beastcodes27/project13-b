@@ -40,7 +40,7 @@ if (session_status() === PHP_SESSION_NONE) {
             
             <div class="nav-auth">
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <span style="margin-right: 1rem; color: var(--text-color);">Hi, <?php echo htmlspecialchars($_SESSION['user_name'] ?? 'User'); ?></span>
+                    <span>Hi, <?php echo htmlspecialchars($_SESSION['user_name'] ?? 'User'); ?></span>
                     <?php 
                         $dashboardLink = 'client_dashboard.php';
                         if (isset($_SESSION['user_role'])) {
@@ -58,5 +58,40 @@ if (session_status() === PHP_SESSION_NONE) {
                     <a href="register.php" class="btn btn-primary">Get Started</a>
                 <?php endif; ?>
             </div>
+
+            <div class="menu-toggle" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
         </div>
     </nav>
+
+    <script>
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (menuBtn && navLinks) {
+            menuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                const icon = menuBtn.querySelector('i');
+                if (navLinks.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+
+        // Close menu when clicking links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks) navLinks.classList.remove('active');
+                const icon = menuBtn ? menuBtn.querySelector('i') : null;
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        });
+    </script>
