@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - SmartSecure Solutions</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="nav-logo">
+                <i class="fas fa-shield-alt"></i> SmartSecure
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="index.html#services" class="nav-link">Services</a></li>
+                <li><a href="index.html#about" class="nav-link">About Us</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <div class="nav-auth">
+                <a href="login.html" class="btn btn-outline" style="margin-right: 1rem;">Log In</a>
+                <a href="register.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container"
+        style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding-top: 100px; padding-bottom: 4rem;">
+        <div class="auth-card animate-fade-in" style="width: 100%; max-width: 500px;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div
+                    style="display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); border-radius: 50%; margin-bottom: 1rem; color: var(--success-color); font-size: 1.5rem;">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h2>Create Account</h2>
+                <p style="color: var(--text-muted);">Join SmartSecure Solutions today</p>
+            </div>
+
+            <form action="api/auth/register.php" method="POST">
+                <div class="form-group">
+                    <label for="fullname" class="form-label">Full Name</label>
+                    <div style="position: relative;">
+                        <input type="text" id="fullname" name="fullname" class="form-control" required
+                            placeholder="John Doe" style="padding-left: 2.5rem;">
+                        <i class="fas fa-user"
+                            style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <div style="position: relative;">
+                        <input type="email" id="email" name="email" class="form-control" required
+                            placeholder="name@example.com" style="padding-left: 2.5rem;">
+                        <i class="fas fa-envelope"
+                            style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <div style="position: relative;">
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="+1234567890"
+                            style="padding-left: 2.5rem;">
+                        <i class="fas fa-phone"
+                            style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="password" name="password" class="form-control" required
+                            placeholder="••••••••" style="padding-left: 2.5rem;">
+                        <i class="fas fa-lock"
+                            style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password" class="form-label">Confirm Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-control"
+                            required placeholder="••••••••" style="padding-left: 2.5rem;">
+                        <i class="fas fa-lock"
+                            style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                    Sign Up <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                </button>
+            </form>
+
+            <p style="text-align: center; margin-top: 1.5rem; color: var(--text-muted);">
+                Already have an account? <a href="login.html" style="color: var(--primary-color); font-weight: 600;">Log
+                    in</a>
+            </p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SmartSecure Solutions. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Check for password match
+        const form = document.querySelector('form');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirm_password');
+
+        form.addEventListener('submit', function (e) {
+            if (password.value !== confirmPassword.value) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+            }
+        });
+    </script>
+</body>
+
+</html>

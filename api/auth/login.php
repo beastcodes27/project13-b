@@ -7,7 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = trim($_POST['password']);
 
     if (empty($email) || empty($password)) {
-        header("Location: ../../login.php?error=empty_fields");
+    if (empty($email) || empty($password)) {
+        header("Location: ../../login.html?error=empty_fields");
         exit;
     }
 
@@ -26,26 +27,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($user['role'] === 'admin') {
                 header("Location: ../../admin_dashboard.php"); 
             } elseif ($user['role'] === 'technician') {
-                // Placeholder for technician dashboard
-                 header("Location: ../../index.php");
+                 // Placeholder for technician dashboard
+                 header("Location: ../../technician_dashboard.php");
             } else {
-                header("Location: ../../index.php");
+                header("Location: ../../client_dashboard.php");
             }
             exit;
         } else {
             // Invalid credentials
-            header("Location: ../../login.php?error=invalid_credentials");
+            header("Location: ../../login.html?error=invalid_credentials");
             exit;
         }
     } catch (PDOException $e) {
         // Log error and redirect
         error_log($e->getMessage());
-        header("Location: ../../login.php?error=server_error");
+        header("Location: ../../login.html?error=server_error");
         exit;
     }
 } else {
     // If not POST, redirect to login
-    header("Location: ../../login.php");
+    header("Location: ../../login.html");
     exit;
 }
 ?>

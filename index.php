@@ -1,4 +1,17 @@
-<?php include 'includes/header.php'; ?>
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (isset($_SESSION['user_id'])) {
+    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
+        header("Location: admin_dashboard.php");
+    } else {
+        header("Location: client_dashboard.php");
+    }
+    exit;
+}
+include 'includes/header.php'; 
+?>
 
 <main>
     <!-- Hero Section -->

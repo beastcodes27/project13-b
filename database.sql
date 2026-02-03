@@ -52,3 +52,13 @@ INSERT INTO services (name, description) VALUES
 ('Alarm Systems', 'Intruder detection and alarm system setup.'),
 ('Electric Fence', 'High-voltage electric fencing for perimeter security.'),
 ('Access Control', 'Biometric and card-based access control systems.');
+
+-- Contact Messages Table
+CREATE TABLE IF NOT EXISTS contact_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_read BOOLEAN DEFAULT FALSE
+);
