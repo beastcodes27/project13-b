@@ -40,8 +40,7 @@ CREATE TABLE IF NOT EXISTS installation_requests (
 );
 
 
-INSERT INTO users (full_name, email, password, role) VALUES 
-('System Admin', 'admin@smartsecure.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin'); 
+
 
 INSERT INTO services (name, description) VALUES 
 ('CCTV Installation', 'Professional installation of surveillance cameras for home or office.'),
